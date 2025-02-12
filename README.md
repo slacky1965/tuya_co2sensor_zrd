@@ -58,6 +58,8 @@ ota:
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/tuya_ready.jpg"/>
 
 Далее идем в раздел OTA. И видим там свое устройство. Жмем проверить обновления.
+
+<img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/update.jpg"/>
 	
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/check_update.jpg"/>
 
