@@ -15,6 +15,15 @@
         "force": true
     },
     {
-        "url": "images/6565-0391-10123001-tuya_thermostat_zrd.zigbee"
+        "url": "images/1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee",
+        "modelId": "TS0601",
+        "manufacturerName": [
+                             "_TZE200_ogkdpgy2"
+                             ],
+        "force": true
+    },
+    {
+        "url": "images/6565-0391-10123001-tuya_thermostat_zrd.zigbee",
+        "force": true
     }
 ]
