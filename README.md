@@ -1,4 +1,4 @@
-# <a id="Top">Tuya CO2 Sensor Zigbee with custom firmware</a>
+# <a id="Top">Tuya CO2 Sensor Zigbee on MH-Z19E with custom firmware</a>
 
 ### Custom firmware for Tuya CO2 sensor models
 
