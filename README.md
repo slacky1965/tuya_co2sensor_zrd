@@ -1,27 +1,33 @@
 # <a id="Top">Tuya CO2 Sensor Zigbee on MH-Z19E with custom firmware</a>
 
+### [Описание на русском](README_rus.md)
+
 ### Custom firmware for Tuya CO2 sensor models
 
 1. Model r01
 	- "_TZE200_ogkdpgy2"
+	- "_TZE204_ogkdpgy2"
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/sensor.jpg"/>
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/board.jpg"/>
 
-**Автор не несет никакой отвественности, если вы, воспользовавшись этим проектом, превратите свой умный датчик CO2 в полоумный.**
+**The author does not bear any responsibility if you turn your smart CO2 sensor into a crazy one by using this project.**
 
-Если у вас другая сигнатура, лучше не заливать, не проверив на совпадение датапоинтов.
+If you have a different signature, it is better not to upload without checking for a match in the datapoints.
 
-Проверялся только в zigbee2mqtt.
+Tested only in zigbee2mqtt.
 
-## Зачем. 
+## For what.
 
-Чтобы не спамил в сеть. Шлет данные каждые полторы секунды.
+To avoid spamming the network. Sends data every one and a half seconds.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/spam.jpg"/>
 
-## Что получилось. 
+
+About
+
+## What happened?
 
 **About**
 
@@ -35,46 +41,45 @@
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/reporting.jpg"/>
 
+## How to update.
 
-## Как обновить.
+First, connect two external [converters](https://github.com/slacky1965/tuya_co2sensor_zrd/tree/main/zigbee2mqtt/convertors) `tuya_co2sensor_orig.js` and `z2m and tuya_co2sensor.js`. The first one activates OTA in z2m for a sensor with firmware from Tuya. The second one is needed for a sensor with already updated (custom) firmware. There is no need to change anything in the converters, everything should be picked up automatically.
 
-Сначала подключаем к z2m два внешних [конвертора](https://github.com/slacky1965/tuya_co2sensor_zrd/tree/main/zigbee2mqtt/convertors) `tuya_co2sensor_orig.js` и `tuya_co2sensor.js`. Первый активирует OTA в z2m для датчика с прошивкой от Tuya. Второй нужен для датчика с уже обновленной (кастомной) прошивкой. В конверторах менять ничего не надо, все должно подхватиться автоматом.
+Next you need to add a local update repository.
 
-Далее нужно добавить локальное хранилище обновлений. 
+Create a directory `images` in the z2m directory and put the file [1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee there](https://github.com/slacky1965/tuya_co2sensor_zrd/raw/refs/heads/main/bin/1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee).
 
-Создаем директорию `images` в директории z2m и кладем туда файл [1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee](https://github.com/slacky1965/tuya_co2sensor_zrd/raw/refs/heads/main/bin/1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee).
-
-Копируем в директорию z2m файл [local_ota_index.json](https://github.com/slacky1965/tuya_co2sensor_zrd/blob/main/zigbee2mqtt/local_ota_index.json)
+Copy the [local_ota_index.json](https://github.com/slacky1965/tuya_co2sensor_zrd/blob/main/zigbee2mqtt/local_ota_index.json) file to the z2m directory
 
 ```
 ota:
   zigbee_ota_override_index_location: local_ota_index.json
 ```
 
-А два конвертора кладем в директорию `external_converters`, которую нужно создать в корне z2m.
+And we put two converters in the directory `external_converters` that needs to be created in the root of z2m.
 
-Далее перегружаем z2m. И видим у нас новое устройство.
+Next we reboot z2m. And we see a new device.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/tuya_ready.jpg"/>
 
-Далее идем в раздел OTA. И видим там свое устройство. Жмем проверить обновления.
+Next, go to the OTA section. And see your device there. Click check for updates.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/update.jpg"/>
 	
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/check_update.jpg"/>
 
-Жмем на красную кнопку. И обновляемся.
+Click on the red button. And update.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/update_1.jpg"/>
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/update_2.jpg"/>
 
-Если все не так, как описано, значит вы что-то сделали не по инструкции (не положили файл куда нужно, не перегрузили z2m) или сигнатуры вашего датчика нет в списке поддерживаемых устройств.
+If everything is not as described, then you did something not according to the instructions (did not put the file where it should be, did not reboot z2m) or the signature of your sensor is not in the list of supported devices.
 
 > [!WARNING]
-> Внимание!!! Если в процессе вы обнаружите на каких-то устройствах Туя, которые возможно у вас есть еще в системе, новое обновление, то обновлять ничего не нужно!!! Иначе вы зальете в это устройство прошивку от датчика и получите кирпич!!! Если же процесс обновления по ошибке уже начался, то просто обесточьте это устройство!!!
+> Attention!!! If during the process you find a new update on some Tuya devices that you may still have in the system, then you do not need to update anything!!! Otherwise, you will upload the firmware from the sensor to this device and get a brick!!! If the update process has already started by mistake, then simply de-energize this device!!!
 
-Далее ждем окончания. Вот так выглядит лог при первом старте после обновления с прошивки Tuya на кастомную.
+Next, we wait for the end. This is what the log looks like at the first start after updating from Tuya firmware to a custom one.
 
 ```
 OTA mode enabled. MCU boot from address: 0x0
@@ -94,34 +99,33 @@ Use modelId: Tuya_CO2Sensor_r01
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/joined.jpg"/>
 
-Все, датчик готов к работе.
+That's it, the sensor is ready to work.
 
-В Home Assistant это выглядит так
+In Home Assistant it looks like this
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/ha.jpg"/>
 
-В середине провал - это я ушел гулять с собаками и открыл все форточки.
+There is a gap in the middle - I went for a walk with the dogs and opened all the windows.
 
-Все.
+All.
 
-P.S. В реальной работе не проверялось, требует всестороннего тестирования.
-
----
-
-Связаться со мной можно в **[Telegram](https://t.me/slacky1965)**.
-
-### Если захотите отблагодарить автора, то это можно сделать через [ЮMoney](https://yoomoney.ru/to/4100118300223495)
+P.S. Not tested in real work, requires comprehensive testing.
 
 ---
 
-Спасибы :))
+You can contact me on **[Telegram](https://t.me/slacky1965)**.
 
-- [@upavlel](https://t.me/upavlel) за предоставленный датчик CO2 `_TZE200_ogkdpgy2` на растерзание.
+### If you want to thank the author, you can do it through [ЮMoney](https://yoomoney.ru/to/4100118300223495)
+
+---
+
+Thanks :))
+
+- [@upavlel](https://t.me/upavlel) for providing the CO2 sensor `_TZE200_ogkdpgy2` to be torn apart.
 
 
-## История версий
+## Version history
 - 1.0.01
-	- Начало.
+	- Start.
 
-[Наверх](#Top)
-
+[To the top](#Top)
