@@ -1,7 +1,8 @@
 const {identify, reporting, ota} = require('zigbee-herdsman-converters/lib/modernExtend');
 
 const definition = {
-    fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE200_ogkdpgy2'}
+    fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE200_ogkdpgy2'},
+                  {modelID: 'TS0601', manufacturerName: '_TZE204_ogkdpgy2'}
                  ],
     zigbeeModel: ['TS0601'],
     model: 'Original Tuya CO2 sensor ready for update',
