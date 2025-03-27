@@ -18,16 +18,14 @@ If you have a different signature, it is better not to upload without checking f
 
 Tested only in zigbee2mqtt.
 
-## For what.
+## Why.
 
 To avoid spamming the network. Sends data every one and a half seconds.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/spam.jpg"/>
 
 
-About
-
-## What happened?
+## Result. 
 
 **About**
 
@@ -43,7 +41,7 @@ About
 
 ## How to update.
 
-First, connect two external [converters](https://github.com/slacky1965/tuya_co2sensor_zrd/tree/main/zigbee2mqtt/convertors) `tuya_co2sensor_orig.js` and `z2m and tuya_co2sensor.js`. The first one activates OTA in z2m for a sensor with firmware from Tuya. The second one is needed for a sensor with already updated (custom) firmware. There is no need to change anything in the converters, everything should be picked up automatically.
+First, add two external [converters](https://github.com/slacky1965/tuya_co2sensor_zrd/tree/main/zigbee2mqtt/convertors) `tuya_co2sensor_orig.js` and `z2m and tuya_co2sensor.js`. The first one activates OTA in z2m for a sensor with firmware from Tuya. The second one is needed for a sensor with already updated (custom) firmware. You don't need to change anything in the converters, all available properties should be there automatically.
 
 Next you need to add a local update repository.
 
@@ -95,7 +93,7 @@ Tuya signature found: "ogkdpgy2"
 Use modelId: Tuya_CO2Sensor_r01
 ```
 
-После обновления нужно удалить устройство из z2m. Перегрузить z2m. Разрешить сопряжение. Если на датчике светодиод горит, то больше делать ничего не нужно. Если не горит, то зажать кнопку на 5 секунд и отпустить. Светодиод должен загореться. Начнется сопряжение.
+After the update, you need to remove the device from z2m. Reboot z2m. Allow pairing. If the LED on the sensor is lit, then you don't need to do anything else. If it's not lit, then hold the button for 5 seconds and release. The LED should light up. Pairing will begin.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/joined.jpg"/>
 
@@ -126,6 +124,10 @@ Thanks :))
 
 ## Version history
 - 1.0.01
-	- Start.
+	- Initial version.
+- 1.0.02
+	- The code for checking and overwriting `bootloader` has been removed from the main firmware - it was a potential threat of boot sector corruption under certain circumstances. This code is now only contained in the firmware that is loaded on the first update.
+	- At the first update, the version number will always be `1.0.00` - done specially for the fastest update to the main firmware, where there is no code to check and overwrite `bootloader`.
+
 
 [To the top](#Top)

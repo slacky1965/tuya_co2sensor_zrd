@@ -104,7 +104,7 @@ sizedummy \
 # All Target
 bootloader: pre-build main-build
 
-bootloader-flash: $(BIN_FILE)
+bootloader-flash:
 	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BIN_FILE)
 	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0x7f00 0x100
 	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0x7ff0 $(MARKER_BIN)
