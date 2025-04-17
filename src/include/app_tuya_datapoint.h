@@ -1,6 +1,8 @@
 #ifndef SRC_INCLUDE_APP_TUYA_DATAPOINT_H_
 #define SRC_INCLUDE_APP_TUYA_DATAPOINT_H_
 
+#define DP_TYPE_ID_00 0x00
+
 /* data point for manufacturer id -
  * "ogkdpgy20"
  *
@@ -10,13 +12,31 @@ typedef enum {
     DP_TYPE1_ID_02    = 0x02,     // ppm
 } data_point_id_type1_t;
 
+/* data point for manufacturer id -
+ * "yvx5lh6k"
+ *
+ * type2 (model2)
+*/
+typedef enum {
+    DP_TYPE2_ID_02    = 0x02,     // CO2 ppm
+    DP_TYPE2_ID_12    = 0x12,     // Temperature
+    DP_TYPE2_ID_13    = 0x13,     // Humidity %
+    DP_TYPE2_ID_15    = 0x15,     // VOC
+    DP_TYPE2_ID_16    = 0x16,     // Formaldehyd
+} data_point_id_type2_t;
+
 typedef enum {
     MANUF_NAME_1 = 0,
+    MANUF_NAME_2,
     MANUF_NAME_MAX
 } manuf_name_t;
 
 typedef enum {
     DP_IDX_CO2  = 0,
+    DP_IDX_TEMP,
+    DP_IDX_HUM,
+    DP_IDX_VOC,
+    DP_IDX_FHYD,
     DP_IDX_MAXNUM
 } data_point_idx_t;
 

@@ -59,6 +59,49 @@ typedef struct {
     float   max;
 } zcl_co2Attr_t;
 
+/**
+ *  @brief Defined for tempearute cluster attributes
+ */
+typedef struct {
+    int16_t value;
+    int16_t minValue;
+    int16_t maxValue;
+} zcl_temperatureAttr_t;
+
+/**
+ *  @brief Defined for humidity cluster attributes
+ */
+typedef struct {
+    int16_t value;
+    int16_t minValue;
+    int16_t maxValue;
+} zcl_humidityAttr_t;
+
+/**
+ *  @brief Defined for Formaldehyd clusters attributes
+ */
+typedef struct {
+    float   value;
+    float   min;
+    float   max;
+} zcl_fhydAttr_t;
+
+/**
+ *  @brief Defined for analog input clusters attributes
+ */
+typedef struct __attribute__((packed)) {
+    uint32_t    index  :16;    // 0x0200: Vendor VOC
+    uint32_t    type   :8;     // 0x05: Parts per Million PPM
+    uint32_t    group  :8;     // 0x00: Analog Input
+} aInput_appType_t;
+
+typedef struct __attribute__((packed)) {
+    uint8_t     out_of_service;
+    float       value;
+    uint8_t     status_flag;
+    aInput_appType_t app_type;
+} zcl_aInputAttr_t;
+
 extern uint8_t APP_EP1_CB_CLUSTER_NUM;
 
 /* Attributes */
@@ -67,5 +110,8 @@ extern zcl_identifyAttr_t g_zcl_identifyAttrs;
 extern zcl_groupAttr_t g_zcl_group1Attrs;
 extern zcl_sceneAttr_t g_zcl_scene1Attrs;
 extern zcl_co2Attr_t g_zcl_co2Attrs;
+extern zcl_temperatureAttr_t g_zcl_temperatureAttrs;
+extern zcl_humidityAttr_t g_zcl_humidityAttrs;
+extern zcl_aInputAttr_t g_zcl_aInputAttrs;
 
 #endif /* SRC_INCLUDE_APP_ENDPOINT_CFG_H_ */

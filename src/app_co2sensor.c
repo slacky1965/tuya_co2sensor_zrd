@@ -36,7 +36,7 @@ void local_cmd_co2(void *args) {
 
     float attrCo2 = (float)*co2/1000000;
 
-    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_CO2_MEASUREMENT, ZCL_CO2_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&attrCo2);
+//    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_CO2_MEASUREMENT, ZCL_CO2_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&attrCo2);
 
 #if UART_PRINTF_MODE && DEBUG_CMD
             printf("PPM: %d\r\n", *co2);

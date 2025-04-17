@@ -1,9 +1,11 @@
 #ifndef SRC_INCLUDE_APP_BOOTLOADER_H_
 #define SRC_INCLUDE_APP_BOOTLOADER_H_
 
-#define BOOTLOADER_ADDR         0x0
+#define BOOTLOADER_ADDR         BOOT_LOADER_IMAGE_ADDR
 #define IMAGE_OTA_ADDR1         0x70000
 #define IMAGE_OTA_ADDR2         FLASH_ADDR_OF_OTA_IMAGE
+#define IMAGE_OTA_ADDR_END      0xE6000                     /* for 1M flash module */
+#define IMAGE_OTA_SIZE          0x68000                     /* tuya addr 0x70000, ota_end 0xe6000, e6000-70000=68000 */
 #define BOOTLOAD_MARKER         ZCL_BASIC_MFG_NAME
 #define BOOTLOAD_MARKER_ADDR    0x7ff0
 #define BOOTLOAD_MARKER_SECTOR  0x7000
