@@ -204,7 +204,14 @@ void user_init(bool isRetention) {
 
     bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_MS_CO2_MEASUREMENT,
                             ZCL_CO2_MEASUREMENT_ATTRID_MEASUREDVALUE, 300, 3600, (uint8_t *)&reportableChange);
-
+    bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT,
+                            ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, 300, 3600, (uint8_t *)&reportableChange);
+    bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY,
+                            ZCL_ATTRID_HUMIDITY_MEASUREDVALUE, 300, 3600, (uint8_t *)&reportableChange);
+    bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_MS_FHYD_MEASUREMENT,
+                            ZCL_FHYD_MEASUREMENT_ATTRID_MEASUREDVALUE, 300, 3600, (uint8_t *)&reportableChange);
+    bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC,
+                            ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE, 300, 3600, (uint8_t *)&reportableChange);
     /* Initialize BDB */
     bdb_init((af_simple_descriptor_t *)&app_ep1Desc, &g_bdbCommissionSetting, &g_zbBdbCb, 1);
 }
