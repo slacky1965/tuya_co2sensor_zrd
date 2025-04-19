@@ -176,6 +176,8 @@ static void set_command(command_t command, uint16_t f_seq_num, bool inc_seq_num)
             out_pkt->len = reverse16(1);
             out_pkt->pkt_len++;
             out_pkt->pkt_len++;
+            if (zb_getLocalShortAddr() >= 0xFFF8)
+                status_net = STATUS_NET_FREE;
             out_pkt->data[0] = status_net;
             out_pkt->pkt_len++;
             out_pkt->data[1] = checksum((uint8_t*)out_pkt, out_pkt->pkt_len++);
@@ -577,13 +579,6 @@ void uart_cmd_handler() {
                             zb_resetDevice2FN();
                             TL_ZB_TIMER_SCHEDULE(factory_reset_statusCb, NULL, TIMEOUT_15SEC);
                         }
-//                        if (!factory_resetTimerEvt) {
-//                            if (!factory_reset_status) {
-//                                factory_reset_status = 2;
-//                                printf("reset factory 2\r\n");
-//                                zb_resetDevice2FN();
-//                            }
-//                        }
                     } else if (!factory_reset_status) {
                         factory_reset_status = 1;
                         if (factory_resetTimerEvt) {
@@ -595,24 +590,7 @@ void uart_cmd_handler() {
                         factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
                     }
 
-//                    if (factory_reset_cnt == 0 && factory_reset_status != 2) {
-//                        printf("FN1\r\n");
-//                        zb_resetDevice2FN();
-//                        factory_reset_cnt++;
-//                        factory_reset_status = 1;
-//                        factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
-//                    } else {
-//                        printf("FN2\r\n");
-//                        if (factory_resetTimerEvt && factory_reset_status == 1) {
-//                            TL_ZB_TIMER_CANCEL(&factory_resetTimerEvt);
-//                        }
-//                        if (factory_reset_status == 1) {
-//                            factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
-//                        }
-//                    }
                     set_command(pkt->command, pkt->seq_num, false);
-//                    zb_factoryReset();
-//                    TL_ZB_TIMER_SCHEDULE(delayedMcuResetCb, NULL, TIMEOUT_3SEC);
 //                } else if (pkt->command == COMMAND02) {
 //                    printf("input COMMAND02\r\n");
 
