@@ -35,6 +35,6 @@ void local_cmd_co2(void *args);
 void local_cmd_temperature_2(void *args);
 void local_cmd_humidity_2(void *args);
 void local_cmd_voc_2(void *args);
-void local_cmd_formaldehyd_2(void *args);
+void local_cmd_formaldehyde_2(void *args);
 
 #endif /* SRC_INCLUDE_APP_CO2SENSOR_H_ */

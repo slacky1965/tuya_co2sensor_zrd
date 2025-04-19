@@ -22,7 +22,7 @@ typedef enum {
     DP_TYPE2_ID_12    = 0x12,     // Temperature
     DP_TYPE2_ID_13    = 0x13,     // Humidity %
     DP_TYPE2_ID_15    = 0x15,     // VOC
-    DP_TYPE2_ID_16    = 0x16,     // Formaldehyd
+    DP_TYPE2_ID_16    = 0x16,     // Formaldehyde
 } data_point_id_type2_t;
 
 typedef enum {

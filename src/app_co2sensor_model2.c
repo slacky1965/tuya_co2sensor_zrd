@@ -11,7 +11,7 @@ data_point_st_t data_point_model2[DP_IDX_MAXNUM] = {
         {DP_TYPE2_ID_12, DP_VAL,  4,    10, NULL, local_cmd_temperature_2},                        // temperature
         {DP_TYPE2_ID_13, DP_VAL,  4,    10, NULL, local_cmd_humidity_2},                           // humidity
         {DP_TYPE2_ID_15, DP_VAL,  4,    1,  NULL, local_cmd_voc_2},                                // voc
-        {DP_TYPE2_ID_16, DP_VAL,  4,    1,  NULL, local_cmd_formaldehyd_2},                        // formaldehyd
+        {DP_TYPE2_ID_16, DP_VAL,  4,    1,  NULL, local_cmd_formaldehyde_2},                        // formaldehyde
 };
 
 
@@ -71,19 +71,18 @@ void local_cmd_voc_2(void *args) {
 
     *voc *= divisor;
 
-    float attrVoc = (float)*voc/1000000;
+    float attrVoc = (float)*voc/100000000;
 
-    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_CO2_MEASUREMENT, ZCL_CO2_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&attrVoc);
-//    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC, ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE, (uint8_t*)&attrVoc);
+    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC, ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE, (uint8_t*)&attrVoc);
 
-#if UART_PRINTF_MODE //&& DEBUG_CMD
+#if UART_PRINTF_MODE && DEBUG_CMD
             printf("VOC PPM: %d\r\n", *voc);
 #endif
 
 }
 
 
-void local_cmd_formaldehyd_2(void *args) {
+void local_cmd_formaldehyde_2(void *args) {
 
     int32_t *fhyd = (int32_t*)args;
     uint16_t divisor = 1;
@@ -96,7 +95,7 @@ void local_cmd_formaldehyd_2(void *args) {
 
     *fhyd *= divisor;
 
-    float attrFhyd = (float)*fhyd/1000000;
+    float attrFhyd = (float)*fhyd/100000000;
 
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_FHYD_MEASUREMENT, ZCL_FHYD_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&attrFhyd);
 

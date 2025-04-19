@@ -285,7 +285,7 @@ void uart_cmd_handler() {
     if (first_start) {
         reset_cmd_queue();
         set_command(COMMAND01, seq_num, true);
-        printf("set command first\r\n");
+        //printf("set command first\r\n");
         data_point_model_init();
         check_answerMcuTimerEvt = TL_ZB_TIMER_SCHEDULE(check_answerMcuCb, NULL, TIMEOUT_1MIN30SEC);
 
@@ -678,7 +678,7 @@ void uart_cmd_handler() {
                                 data_point->dp_type == data_point_model[DP_IDX_FHYD].type) {
 
 #if UART_PRINTF_MODE && DEBUG_DP
-                         printf("DP Formaldehyd\r\n");
+                         printf("DP Formaldehyde\r\n");
 #endif
                          uint32_t fhyd = int32_from_str(data_point->data);
 
@@ -687,7 +687,7 @@ void uart_cmd_handler() {
                         } else if (data_point->dp_id == data_point_model[DP_IDX_VOC].id &&
                                 data_point->dp_type == data_point_model[DP_IDX_VOC].type) {
 
-#if UART_PRINTF_MODE //&& DEBUG_DP
+#if UART_PRINTF_MODE && DEBUG_DP
                          printf("DP VOC\r\n");
 #endif
                          uint32_t voc = int32_from_str(data_point->data);
