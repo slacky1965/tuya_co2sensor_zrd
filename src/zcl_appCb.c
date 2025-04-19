@@ -1006,5 +1006,70 @@ status_t app_co2Cb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPay
     return status;
 }
 
+
 #endif /* ZCL_CO2_MEASUREMENT */
+
+/*********************************************************************
+ * @fn      app_temperatureCb
+ *
+ * @brief   Handler for ZCL Temperature command.
+ *
+ * @param   pAddrInfo
+ * @param   cmdId
+ * @param   cmdPayload
+ *
+ * @return  status_t
+ */
+status_t app_temperatureCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload) {
+
+//    printf("app_tepmeratureCb. cmd: 0x%x\r\n", cmdId);
+
+    return ZCL_STA_SUCCESS;
+}
+
+
+/*********************************************************************
+ * @fn      app_humidityCb
+ *
+ * @brief   Handler for ZCL Humidity command.
+ *
+ * @param   pAddrInfo
+ * @param   cmdId
+ * @param   cmdPayload
+ *
+ * @return  status_t
+ */
+status_t app_humidityCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload) {
+
+//    printf("app_humidityCb. cmd: 0x%x\r\n", cmdId);
+
+    return ZCL_STA_SUCCESS;
+}
+
+#ifdef ZCL_FHYD_MEASUREMENT
+
+status_t app_fhydCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload) {
+
+//    printf("app_fhydCb(). pAddrInfo->dirCluster: %0x%x, cmdId: 0x%x\r\n", pAddrInfo->dirCluster, cmdId);
+
+    status_t status = ZCL_STA_SUCCESS;
+
+    return status;
+}
+
+
+#endif /* ZCL_FHYD_MEASUREMENT */
+
+#ifdef ZCL_ANALOG_INPUT
+
+status_t app_aInputCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload) {
+
+//    printf("app_aInputCb(). pAddrInfo->dirCluster: %0x%x, cmdId: 0x%x\r\n", pAddrInfo->dirCluster, cmdId);
+
+    status_t status = ZCL_STA_SUCCESS;
+
+    return status;
+}
+
+#endif /* ZCL_ANALOG_INPUT */
 

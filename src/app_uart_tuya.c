@@ -258,9 +258,18 @@ static int32_t factory_resetCb(void *arg) {
 
     zb_resetDevice2FN();
 
+    printf("reset factory 2 from timer\r\n");
     factory_reset_status = 2;
 
     factory_resetTimerEvt = NULL;
+    return -1;
+}
+
+static int32_t factory_reset_statusCb(void *arg) {
+
+    printf("clear reset factory status from timer\r\n");
+    factory_reset_status = 0;
+
     return -1;
 }
 
@@ -276,7 +285,7 @@ void uart_cmd_handler() {
     if (first_start) {
         reset_cmd_queue();
         set_command(COMMAND01, seq_num, true);
-        printf("set command first\r\n");
+        //printf("set command first\r\n");
         data_point_model_init();
         check_answerMcuTimerEvt = TL_ZB_TIMER_SCHEDULE(check_answerMcuCb, NULL, TIMEOUT_1MIN30SEC);
 
@@ -406,7 +415,7 @@ void uart_cmd_handler() {
                                         for (uint8_t ii = 0; ii < MANUF_NAME_MAX; ii++) {
                                             for (uint8_t i = 0; i < 255; i++) {
                                                 if (tuya_manuf_names[ii][i] == NULL) break;
-    //                                            printf("tuya_manuf_names[%d][%d]: %s\r\n", ii, i, tuya_manuf_names[ii][i]);
+//                                                printf("tuya_manuf_names[%d][%d]: %s\r\n", ii, i, tuya_manuf_names[ii][i]);
                                                 if (strcmp(tuya_manuf_names[ii][i], (char8_t*)ptr) == 0) {
                                                     manuf_name = ii;
                                                     ii = MANUF_NAME_MAX;
@@ -443,10 +452,6 @@ void uart_cmd_handler() {
 
                                         zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_BASIC, ZCL_ATTRID_BASIC_MODEL_ID, zb_modelId_arr[manuf_name]);
                                         data_point_model = data_point_model_arr[manuf_name];
-
-//                                        if (manuf_name == MANUF_NAME_5 || manuf_name == MANUF_NAME_6) {
-//                                            set_command(COMMAND28, seq_num, true);
-//                                        }
 
                                         break;
                                     case COMMAND02:
@@ -565,21 +570,46 @@ void uart_cmd_handler() {
 #if UART_PRINTF_MODE // && DEBUG_CMD
                     printf("command 0x03. Factory Reset\r\n");
 #endif
-                    if (factory_reset_cnt == 0 && factory_reset_status != 2) {
-                        printf("FN1\r\n");
-                        zb_resetDevice2FN();
-                        factory_reset_cnt++;
+                    if (zb_getLocalShortAddr() >= 0xFFF8) {
+                        if (!factory_reset_status) {
+                            factory_reset_status = 2;
+                            printf("reset factory 2. zb_getLocalShortAddr(): 0x%x\r\n", zb_getLocalShortAddr());
+                            zb_resetDevice2FN();
+                            TL_ZB_TIMER_SCHEDULE(factory_reset_statusCb, NULL, TIMEOUT_15SEC);
+                        }
+//                        if (!factory_resetTimerEvt) {
+//                            if (!factory_reset_status) {
+//                                factory_reset_status = 2;
+//                                printf("reset factory 2\r\n");
+//                                zb_resetDevice2FN();
+//                            }
+//                        }
+                    } else if (!factory_reset_status) {
                         factory_reset_status = 1;
-                        factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
-                    } else {
-                        printf("FN2\r\n");
-                        if (factory_resetTimerEvt && factory_reset_status == 1) {
+                        if (factory_resetTimerEvt) {
                             TL_ZB_TIMER_CANCEL(&factory_resetTimerEvt);
+                        } else {
+                            printf("reset factory 1. zb_getLocalShortAddr(): 0x%x\r\n", zb_getLocalShortAddr());
+                            zb_resetDevice2FN();
                         }
-                        if (factory_reset_status == 1) {
-                            factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
-                        }
+                        factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
                     }
+
+//                    if (factory_reset_cnt == 0 && factory_reset_status != 2) {
+//                        printf("FN1\r\n");
+//                        zb_resetDevice2FN();
+//                        factory_reset_cnt++;
+//                        factory_reset_status = 1;
+//                        factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
+//                    } else {
+//                        printf("FN2\r\n");
+//                        if (factory_resetTimerEvt && factory_reset_status == 1) {
+//                            TL_ZB_TIMER_CANCEL(&factory_resetTimerEvt);
+//                        }
+//                        if (factory_reset_status == 1) {
+//                            factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
+//                        }
+//                    }
                     set_command(pkt->command, pkt->seq_num, false);
 //                    zb_factoryReset();
 //                    TL_ZB_TIMER_SCHEDULE(delayedMcuResetCb, NULL, TIMEOUT_3SEC);
@@ -622,6 +652,48 @@ void uart_cmd_handler() {
 
                             if (data_point_model[DP_IDX_CO2].local_cmd)
                                 data_point_model[DP_IDX_CO2].local_cmd(&co2);
+
+                        } else if (data_point->dp_id == data_point_model[DP_IDX_TEMP].id &&
+                                    data_point->dp_type == data_point_model[DP_IDX_TEMP].type) {
+
+#if UART_PRINTF_MODE && DEBUG_DP
+                            printf("DP Temperature\r\n");
+#endif
+                            int16_t temp = int32_from_str(data_point->data);
+
+                            if (data_point_model[DP_IDX_TEMP].local_cmd)
+                                data_point_model[DP_IDX_TEMP].local_cmd(&temp);
+
+                        } else if (data_point->dp_id == data_point_model[DP_IDX_HUM].id &&
+                                    data_point->dp_type == data_point_model[DP_IDX_HUM].type) {
+
+#if UART_PRINTF_MODE && DEBUG_DP
+                            printf("DP Humidity\r\n");
+#endif
+                            uint16_t hum = int32_from_str(data_point->data);
+
+                            if (data_point_model[DP_IDX_HUM].local_cmd)
+                                data_point_model[DP_IDX_HUM].local_cmd(&hum);
+                        } else if (data_point->dp_id == data_point_model[DP_IDX_FHYD].id &&
+                                data_point->dp_type == data_point_model[DP_IDX_FHYD].type) {
+
+#if UART_PRINTF_MODE && DEBUG_DP
+                         printf("DP Formaldehyde\r\n");
+#endif
+                         uint32_t fhyd = int32_from_str(data_point->data);
+
+                         if (data_point_model[DP_IDX_FHYD].local_cmd)
+                             data_point_model[DP_IDX_FHYD].local_cmd(&fhyd);
+                        } else if (data_point->dp_id == data_point_model[DP_IDX_VOC].id &&
+                                data_point->dp_type == data_point_model[DP_IDX_VOC].type) {
+
+#if UART_PRINTF_MODE && DEBUG_DP
+                         printf("DP VOC\r\n");
+#endif
+                         uint32_t voc = int32_from_str(data_point->data);
+
+                         if (data_point_model[DP_IDX_VOC].local_cmd)
+                             data_point_model[DP_IDX_VOC].local_cmd(&voc);
                         }
                     }
                 }

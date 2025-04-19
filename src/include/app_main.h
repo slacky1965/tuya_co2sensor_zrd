@@ -8,6 +8,8 @@
 #include "gp.h"
 
 #include "zcl_concentration_measurement.h"
+#include "zcl_relative_humidity_measurement.h"
+#include "zcl_analog_input.h"
 #include "app_utility.h"
 #include "app_uart_tuya.h"
 #include "app_tuya_datapoint.h"
@@ -77,10 +79,18 @@ status_t app_groupCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdP
 status_t app_sceneCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 status_t app_pollCtrlCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 status_t app_co2Cb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
+status_t app_temperatureCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
+status_t app_humidityCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
+status_t app_fhydCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
+status_t app_aInputCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 
 #define zcl_scene1AttrGet()         &g_zcl_scene1Attrs
 #define zcl_scene2AttrGet()         &g_zcl_scene2Attrs
 #define zcl_co2AttrGet()            &g_zcl_co2Attrs
+#define zcl_temperatureAttrGet()    &g_zcl_temperatureAttrs
+#define zcl_humidityAttrGet()       &g_zcl_humidityAttrs
+#define zcl_fhydAttrGet()           &g_zcl_fhydAttrs
+#define zcl_aInputAttrGet()         &g_zcl_aInputAttrs
 
 void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf);
 void app_leaveIndHandler(nlme_leave_ind_t *pLeaveInd);

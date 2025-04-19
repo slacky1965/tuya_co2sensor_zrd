@@ -21,4 +21,22 @@ status_t zcl_co2_measurement_register(u8 endpoint, u16 manuCode, u8 attrNum, con
 
 #endif
 
+/********************* Formaldehyd Measurement ************************/
+#if ZCL_FHYD_MEASUREMENT_SUPPORT
+#define ZCL_FHYD_MEASUREMENT
+#endif
+
+#ifdef ZCL_FHYD_MEASUREMENT
+
+#define ZCL_CLUSTER_MS_FHYD_MEASUREMENT                  0x042B
+
+#define ZCL_FHYD_MEASUREMENT_ATTRID_MEASUREDVALUE        0x0000
+#define ZCL_FHYD_MEASUREMENT_ATTRID_MINMEASUREDVALUE     0x0001
+#define ZCL_FHYD_MEASUREMENT_ATTRID_MAXMEASUREDVALUE     0x0002
+
+status_t zcl_fhyd_measurement_register(u8 endpoint, u16 manuCode, u8 attrNum, const zclAttrInfo_t attrTbl[], cluster_forAppCb_t cb);
+
+
+#endif
+
 #endif /* SRC_ZCL_ZCL_CONCENTRATION_MEASUREMENT_H_ */

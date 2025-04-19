@@ -199,6 +199,10 @@ extern "C" {
 #define ZCL_OTA_SUPPORT                             ON
 #define ZCL_GP_SUPPORT                              ON
 #define ZCL_CO2_MEASUREMENT_SUPPORT                 ON
+#define ZCL_TEMPERATURE_MEASUREMENT_SUPPORT         ON
+#define ZCL_HUMIDITY_MEASUREMENT_SUPPORT            ON
+#define ZCL_FHYD_MEASUREMENT_SUPPORT                ON
+#define ZCL_ANALOG_INPUT_SUPPORT                    ON
 #if TOUCHLINK_SUPPORT
 #define ZCL_ZLL_COMMISSIONING_SUPPORT               ON
 #endif

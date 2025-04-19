@@ -7,10 +7,14 @@
 1. Model r01
 	- "_TZE200_ogkdpgy2"
 	- "_TZE204_ogkdpgy2"
+2. Model r02
+	- "_TZE204_yvx5lh6k"
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/sensor.jpg"/>
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/board.jpg"/>
+
+<img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/board2.jpg"/>
 
 **The author does not bear any responsibility if you turn your smart CO2 sensor into a crazy one by using this project.**
 
@@ -41,7 +45,7 @@ To avoid spamming the network. Sends data every one and a half seconds.
 
 ## How to update.
 
-First, add two external [converters](https://github.com/slacky1965/tuya_co2sensor_zrd/tree/main/zigbee2mqtt/convertors) `tuya_co2sensor_orig.js` and `z2m and tuya_co2sensor.js`. The first one activates OTA in z2m for a sensor with firmware from Tuya. The second one is needed for a sensor with already updated (custom) firmware. You don't need to change anything in the converters, all available properties should be there automatically.
+First, add external [converter](https://github.com/slacky1965/tuya_co2sensor_zrd/tree/main/zigbee2mqtt/convertors) `tuya_co2sensor_orig.js`. He activates OTA in z2m for a sensor with firmware from Tuya.
 
 Next you need to add a local update repository.
 
@@ -54,7 +58,7 @@ ota:
   zigbee_ota_override_index_location: local_ota_index.json
 ```
 
-And we put two converters in the directory `external_converters` that needs to be created in the root of z2m.
+And we put converter `tuya_co2sensor_orig.js` in the directory `external_converters` that needs to be created in the root of z2m.
 
 Next we reboot z2m. And we see a new device.
 
@@ -120,7 +124,7 @@ You can contact me on **[Telegram](https://t.me/slacky1965)**.
 Thanks :))
 
 - [@upavlel](https://t.me/upavlel) for providing the CO2 sensor `_TZE200_ogkdpgy2` to be torn apart.
-
+- [@ekurdiukov](https://t.me/ekurdiukov) for providing the CO2 sensor `_TZE204_yvx5lh6k`.
 
 ## Version history
 - 1.0.01
@@ -128,6 +132,7 @@ Thanks :))
 - 1.0.02
 	- The code for checking and overwriting `bootloader` has been removed from the main firmware - it was a potential threat of boot sector corruption under certain circumstances. This code is now only contained in the firmware that is loaded on the first update.
 	- At the first update, the version number will always be `1.0.00` - done specially for the fastest update to the main firmware, where there is no code to check and overwrite `bootloader`.
-
+- 1.0.03
+	- Add `_TZE204_yvx5lh6k` sensor.
 
 [To the top](#Top)
