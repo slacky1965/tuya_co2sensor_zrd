@@ -6,6 +6,7 @@
 	- "_TZE200_ogkdpgy2"
 	- "_TZE204_ogkdpgy2"
 2. Model r02
+	- "_TZE200_yvx5lh6k"
 	- "_TZE204_yvx5lh6k"
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/sensor.jpg"/>
