@@ -53,6 +53,8 @@ Create a directory `images` in the z2m directory and put the file [1141-d3a3-111
 
 Copy the [local_ota_index.json](https://github.com/slacky1965/tuya_co2sensor_zrd/blob/main/zigbee2mqtt/local_ota_index.json) file to the z2m directory
 
+And add local storage to the z2m config (configuration.yaml)
+
 ```
 ota:
   zigbee_ota_override_index_location: local_ota_index.json
@@ -134,5 +136,8 @@ Thanks :))
 	- At the first update, the version number will always be `1.0.00` - done specially for the fastest update to the main firmware, where there is no code to check and overwrite `bootloader`.
 - 1.0.03
 	- Add `_TZE204_yvx5lh6k` sensor.
+- 1.0.04
+	- Add `_TZE200_yvx5lh6k` sensor.
+	- Fix bugs in reporting. Fixed bugs with reporting. It didn't work correctly with the float type. With a maximum interval of 0, we got a "brick" (bug SDK).
 
 [To the top](#Top)

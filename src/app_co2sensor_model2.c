@@ -71,9 +71,16 @@ void local_cmd_voc_2(void *args) {
 
     *voc *= divisor;
 
-    float attrVoc = (float)*voc/100000000;
+    float attrVoc = (float)*voc/1000000;
 
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC, ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE, (uint8_t*)&attrVoc);
+
+//    uint8_t *b = (uint8_t*)&attrVoc;
+
+//    printf("VOC PPM hex: 0x%02x", b[3]);
+//    printf("%02x", b[2]);
+//    printf("%02x", b[1]);
+//    printf("%02x\r\n", b[0]);
 
 #if UART_PRINTF_MODE && DEBUG_CMD
             printf("VOC PPM: %d\r\n", *voc);
