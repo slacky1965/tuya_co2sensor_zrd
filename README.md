@@ -128,6 +128,7 @@ Thanks :))
 
 - [@upavlel](https://t.me/upavlel) for providing the CO2 sensor `_TZE200_ogkdpgy2` to be torn apart.
 - [@ekurdiukov](https://t.me/ekurdiukov) for providing the CO2 sensor `_TZE204_yvx5lh6k`.
+- [@vladgennk](https://t.me/vladgennk) for providing the CO2 sensor `_TZE200_yvx5lh6k`.
 
 ## Version history
 - 1.0.01
