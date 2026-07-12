@@ -94,9 +94,9 @@ void local_cmd_formaldehyde_2(void *args) {
     int32_t *fhyd = (int32_t*)args;
     uint16_t divisor = 1;
 
-    if (data_point_model[DP_IDX_CO2].divisor == 10) {
+    if (data_point_model[DP_IDX_FHYD].divisor == 10) {
         divisor = 10;
-    } else if (data_point_model[DP_IDX_CO2].divisor == 100) {
+    } else if (data_point_model[DP_IDX_FHYD].divisor == 100) {
         divisor = 100;
     }
 

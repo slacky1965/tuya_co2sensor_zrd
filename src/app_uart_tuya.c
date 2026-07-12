@@ -449,10 +449,10 @@ void uart_cmd_handler() {
 #endif
 
 #if UART_PRINTF_MODE
-                                        printf("Use modelId: %s\r\n", zb_modelId_arr[manuf_name]+1);
+                                        printf("Use modelId: %s\r\n", zb_modelId_arr[manuf_model_id_arr[manuf_name]]+1);
 #endif
 
-                                        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_BASIC, ZCL_ATTRID_BASIC_MODEL_ID, zb_modelId_arr[manuf_name]);
+                                        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_BASIC, ZCL_ATTRID_BASIC_MODEL_ID, zb_modelId_arr[manuf_model_id_arr[manuf_name]]);
                                         data_point_model = data_point_model_arr[manuf_name];
 
                                         break;

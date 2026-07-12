@@ -31,8 +31,8 @@ TOOLS_PATH := ./tools
 BOOT_FILE := $(OUT_PATH)/bootloader.bin
 VERSION_RELEASE := V$(shell awk -F " " '/APP_RELEASE/ {gsub("0x",""); printf "%.1f", $$3/10.0; exit}' $(SRC_PATH)/include/version_cfg.h)
 VERSION_BUILD := $(shell awk -F " " '/APP_BUILD/ {gsub("0x",""); printf "%02d", $$3; exit}' ./src/include/version_cfg.h)
-ZCL_VERSION_FILE := $(shell git log -1 --format=%cd --date=format:%Y%m%d -- src |  sed -e "'s/./\'&\',/g'" -e "'s/.$$//'")
-BOOT_SIZE := $(shell ls -l $(BOOT_FILE) | awk '{print $$5}')
+ZCL_VERSION_FILE := $(shell python -c "import datetime; print(','.join(repr(c) for c in datetime.datetime.now().strftime('%Y%m%d')))")
+BOOT_SIZE := $(shell ls -l $(BIN_PATH)/bootloader.bin | awk '{print $$5}')
 
 
 TL_CHECK = $(TOOLS_PATH)/tl_check_fw.py
@@ -141,47 +141,53 @@ sizedummy \
 all: pre-build main-build
 
 flash: $(BIN_FILE)
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0x8000 $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0x8000 $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
 
 flash-orig-write:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BIN_PATH)/tuya_co2sensor_orig.bin
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BIN_PATH)/tuya_co2sensor_orig.bin
 	
 flash-orig-read:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m rf 0 0x100000 tuya_co2sensor_orig.bin
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m rf 0 0x100000 tuya_co2sensor_orig.bin
 	
 flash-orig-bootloader-read:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m rf 0 0x8000 tuya_co2sensor_orig_bootloadter.bin
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m rf 0 0x8000 tuya_co2sensor_orig_bootloadter.bin
 	
 erase-flash:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s ea
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s ea
 
 #	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0x0 0xfc000
 #	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0xff000 0x1000
 	
 erase-flash-fimware:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0x8000 0xF4000
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0xff000 0x1000
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0x8000 0xF4000
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0xff000 0x1000
 
 erase-flash-bootloader:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0x0 0x8000
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0x0 0x8000
 
 erase-flash-macaddr:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0xFF000 0x1000
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s es 0xFF000 0x1000
 
 flash-bootloader:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BOOTLOADER)
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BOOTLOADER)
 	
 	
 
 reset:
-	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -t50 -a2550 -m -w i
+	@python $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -t50 -a2550 -m -w i
 
 
 # Main-build Target
 main-build: clean-project $(ELF_FILE) secondary-outputs
 
 # Tool invocations
-$(ELF_FILE): $(OBJS) $(USER_OBJS)
+$(BOOT_FILE): $(BIN_PATH)/bootloader.bin
+	@cp $< $@
+
+$(BOOT_FILE).o: $(BOOT_FILE)
+	$(LD) -r -b binary -o $@ $<
+
+$(ELF_FILE): $(OBJS) $(USER_OBJS) $(BOOT_FILE).o
 	@echo 'Building target: $@'
 	@echo 'Invoking: TC32 C Linker'
 	$(LD) --gc-sections -L $(SDK_PATH)/zigbee/lib/tc32 -L $(SDK_PATH)/platform/lib -L $(SDK_PATH)/platform/tc32 -T $(LS_FLAGS) -o "$(ELF_FILE)" "$(BOOT_FILE).o" $(OBJS) $(USER_OBJS) $(LIBS) 
@@ -199,9 +205,9 @@ ifeq ($(CHECK_BL),1)
 $(BIN_FILE): $(ELF_FILE)
 	@echo 'Create Flash image (binary format)'
 	@$(OBJCOPY) -v -O binary $(ELF_FILE)  $(BIN_FILE)
-	@python3 $(TL_CHECK) $(BIN_FILE)
+	@python $(TL_CHECK) $(BIN_FILE)
 	@echo 'Create zigbee Tuya OTA file'
-	@python3 $(MAKE_OTA_TUYA) -m 4417 -t 54179 -o $(BIN_PATH)/1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee $(BIN_FILE) $(BOOT_FILE)
+	@python $(MAKE_OTA_TUYA) -m 4417 -t 54179 -o $(BIN_PATH)/1141-d3a3-1111114b-tuya_co2sensor_zrd.zigbee $(BIN_FILE) $(BOOT_FILE)
 	@echo ' '
 	@echo 'Finished building: $@'
 	@echo ' '
@@ -209,18 +215,18 @@ else
 $(BIN_FILE): $(ELF_FILE)
 	@echo 'Create Flash image (binary format)'
 	@$(OBJCOPY) -v -O binary $(ELF_FILE)  $(BIN_FILE)
-	@python3 $(TL_CHECK) $(BIN_FILE)
+	@python $(TL_CHECK) $(BIN_FILE)
 	@cat $(BIN_FILE) $(BOOT_FILE) > $(FW_FILE)
 	@cp $(BIN_FILE) $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
 	@echo 'Create zigbee OTA file'
-	@python3 $(MAKE_OTA) -ot $(PROJECT_NAME) $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
+	@python $(MAKE_OTA) -ot $(PROJECT_NAME) $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
 	@echo ' '
 	@echo 'Finished building: $@'
 	@echo ' '
 endif
 
 $(OBJ_DIR)/bin_updater.o: $(OBJ_DIR)
-    @objcopy -I binary --output-target elf32-littlearm --rename-section .data=.bin_files ./updater.bin $@	 
+	@objcopy -I binary --output-target elf32-littlearm --rename-section .data=.bin_files ./updater.bin $@
 
 sizedummy: $(ELF_FILE)
 	@echo 'Invoking: Print Size'

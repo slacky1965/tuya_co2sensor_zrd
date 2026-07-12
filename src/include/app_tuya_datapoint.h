@@ -25,9 +25,23 @@ typedef enum {
     DP_TYPE2_ID_16    = 0x16,     // Formaldehyde
 } data_point_id_type2_t;
 
+/* data point for manufacturer id -
+ * "mja3fuja"
+ *
+ * type3 (model3)
+*/
+typedef enum {
+    DP_TYPE3_ID_02    = 0x02,     // Formaldehyde
+    DP_TYPE3_ID_12    = 0x12,     // Temperature
+    DP_TYPE3_ID_13    = 0x13,     // Humidity %
+    DP_TYPE3_ID_15    = 0x15,     // VOC
+    DP_TYPE3_ID_16    = 0x16,     // CO2 ppm
+} data_point_id_type3_t;
+
 typedef enum {
     MANUF_NAME_1 = 0,
     MANUF_NAME_2,
+    MANUF_NAME_3,
     MANUF_NAME_MAX
 } manuf_name_t;
 
@@ -79,10 +93,11 @@ typedef struct {
 } data_point_st_t;
 
 extern uint8_t manuf_name;
+extern uint8_t manuf_model_id_arr[MANUF_NAME_MAX];
 extern data_point_st_t *data_point_model;
 extern const char8_t **tuya_manuf_names[];
+extern data_point_st_t *data_point_model_arr[MANUF_NAME_MAX];
 
 void data_point_model_init();
-data_point_st_t *data_point_model_arr[DP_IDX_MAXNUM];
 
 #endif /* SRC_INCLUDE_APP_TUYA_DATAPOINT_H_ */

@@ -10,6 +10,10 @@
 2. Model r02
 	- "_TZE200_yvx5lh6k"
 	- "_TZE204_yvx5lh6k"
+	- "_TZE200_mja3fuja"
+
+`_TZE200_mja3fuja` reports the same Zigbee model as r02 for Zigbee2MQTT compatibility,
+but uses its own internal datapoint map.
 
 <img src="https://raw.githubusercontent.com/slacky1965/tuya_co2sensor_zrd/refs/heads/main/doc/images/sensor.jpg"/>
 
@@ -141,5 +145,8 @@ Thanks :))
 - 1.0.04
 	- Add `_TZE200_yvx5lh6k` sensor.
 	- Fix bugs in reporting. Fixed bugs with reporting. It didn't work correctly with the float type. With a maximum interval of 0, we got a "brick" (bug SDK).
+- 1.0.06
+	- Add `_TZE200_mja3fuja` sensor. It uses the same Zigbee model as r02, but has its own internal datapoint map.
+	- Fix formaldehyde divisor selection for model r02 sensors.
 
 [To the top](#Top)

@@ -16,6 +16,7 @@ $(OUT_PATH)/$(SRC_PATH)/app_uart.o \
 $(OUT_PATH)/$(SRC_PATH)/app_co2sensor.o \
 $(OUT_PATH)/$(SRC_PATH)/app_co2sensor_model1.o \
 $(OUT_PATH)/$(SRC_PATH)/app_co2sensor_model2.o \
+$(OUT_PATH)/$(SRC_PATH)/app_co2sensor_model3.o \
 $(OUT_PATH)/$(SRC_PATH)/app_endpoint_cfg.o \
 $(OUT_PATH)/$(SRC_PATH)/app_utility.o \
 $(OUT_PATH)/$(SRC_PATH)/app_bootloader.o \
