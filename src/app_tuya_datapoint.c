@@ -10,16 +10,28 @@ static const char8_t *tuya_manuf_name2[] = {
                                            "yvx5lh6k",
                                             NULL};
 
+static const char8_t *tuya_manuf_name3[] = {
+                                           "mja3fuja",
+                                            NULL};
+
 const char8_t **tuya_manuf_names[] = {
                                       tuya_manuf_name1,
-                                      tuya_manuf_name2
+                                      tuya_manuf_name2,
+                                      tuya_manuf_name3
 };
 
 uint8_t manuf_name = MANUF_NAME_1;
 
-data_point_st_t *data_point_model_arr[DP_IDX_MAXNUM] = {
+uint8_t manuf_model_id_arr[MANUF_NAME_MAX] = {
+                                             MANUF_NAME_1,
+                                             MANUF_NAME_2,
+                                             MANUF_NAME_2
+};
+
+data_point_st_t *data_point_model_arr[MANUF_NAME_MAX] = {
                                                         data_point_model1,
-                                                        data_point_model2
+                                                        data_point_model2,
+                                                        data_point_model3
 };
 
 // Not worked in gcc 4.5.1
