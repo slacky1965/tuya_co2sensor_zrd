@@ -6,8 +6,17 @@ uart_data_t rec_buff = {0,  {0, } };
 uint8_t  ring_buff[RING_BUFF_SIZE];
 uint16_t ring_head, ring_tail;
 uint8_t uart_msg_err;
+uint16_t uart_rx_callback_count;
+uint16_t uart_rx_byte_count;
+uint16_t uart_rx_last_len;
+uint8_t uart_rx_last_first_byte;
+uint16_t uart_rx_first_word;
+uint16_t uart_rx_first_55aa_offset;
+uint16_t uart_rx_sync_word;
 
 static uint32_t uart_baudrate = UART_BAUDRATE_9600;
+static uint32_t uart_tx_pin = GPIO_UART_TX;
+static uint32_t uart_rx_pin = GPIO_UART_RX;
 
 #if UART_PRINTF_MODE && DEBUG_PKT
 
@@ -161,6 +170,11 @@ static size_t write_bytes_to_ring_buff(uint8_t *data, size_t len) {
 static void app_uartRecvCb() {
 
     uint8_t st = SUCCESS;
+    uart_rx_callback_count++;
+    uart_rx_last_len = rec_buff.dma_len;
+    uart_rx_first_word = 0;
+    uart_rx_first_55aa_offset = 0xffff;
+    uart_rx_sync_word = 0;
 
     if(rec_buff.dma_len == 0) {
         st = UART_MSG_STATUS_UART_EXCEPT;
@@ -174,6 +188,20 @@ static void app_uartRecvCb() {
 
         print_pkt_inp(rec_buff.data, rec_buff.dma_len);
 
+        uart_rx_byte_count += rec_buff.dma_len;
+        uart_rx_last_first_byte = rec_buff.data[0];
+        if (rec_buff.dma_len >= 2) {
+            uart_rx_first_word = ((uint16_t)rec_buff.data[0] << 8) | rec_buff.data[1];
+            for (uint16_t i = 0; i + 1 < rec_buff.dma_len && i + 1 < UART_DATA_LEN; i++) {
+                if (rec_buff.data[i] == 0x55 && rec_buff.data[i + 1] == 0xaa) {
+                    uart_rx_first_55aa_offset = i;
+                    uart_rx_sync_word = ((uint16_t)rec_buff.data[i] << 8) | rec_buff.data[i + 1];
+                    break;
+                }
+            }
+        } else if (rec_buff.dma_len == 1) {
+            uart_rx_first_word = ((uint16_t)rec_buff.data[0] << 8);
+        }
         write_bytes_to_ring_buff(rec_buff.data, rec_buff.dma_len);
         sleep_ms(10);
     }
@@ -197,11 +225,16 @@ uartTx_err app_uart_txMsg(uint8_t *data, uint8_t len) {
 void app_uart_init() {
 
     flush_ring_buff();
-    drv_uart_pin_set(GPIO_UART_TX, GPIO_UART_RX);
+    drv_uart_pin_set(uart_tx_pin, uart_rx_pin);
 
     drv_uart_init(uart_baudrate, (uint8_t*)&rec_buff, sizeof(uart_data_t), app_uartRecvCb);
 
 //    printf("uart_baudrate: %d\r\n", uart_baudrate);
+}
+
+void set_uart_pins(uint32_t tx_pin, uint32_t rx_pin) {
+    uart_tx_pin = tx_pin;
+    uart_rx_pin = rx_pin;
 }
 
 uint32_t get_uart_baudrate() {
@@ -210,4 +243,32 @@ uint32_t get_uart_baudrate() {
 
 void set_uart_baudrate(uint32_t baudrate) {
     uart_baudrate = baudrate;
+}
+
+uint16_t get_uart_rx_callback_count() {
+    return uart_rx_callback_count;
+}
+
+uint16_t get_uart_rx_byte_count() {
+    return uart_rx_byte_count;
+}
+
+uint16_t get_uart_rx_last_len() {
+    return uart_rx_last_len;
+}
+
+uint8_t get_uart_rx_last_first_byte() {
+    return uart_rx_last_first_byte;
+}
+
+uint16_t get_uart_rx_first_word() {
+    return uart_rx_first_word;
+}
+
+uint16_t get_uart_rx_first_55aa_offset() {
+    return uart_rx_first_55aa_offset;
+}
+
+uint16_t get_uart_rx_sync_word() {
+    return uart_rx_sync_word;
 }

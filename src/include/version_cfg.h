@@ -43,7 +43,7 @@
 
 #define APP_RELEASE                         0x10        //app release 1.0
 #ifndef VERSION_BUILD
-    #define APP_BUILD                       0x06        //app build 06, full version - v1.0.06
+    #define APP_BUILD                       0x25        //app build 37, full version - v1.0.37
 #endif
 #define STACK_RELEASE						0x30        //stack release 3.0
 #define STACK_BUILD							0x01        //stack build 01
@@ -71,7 +71,7 @@
     #define ZCL_BASIC_BUILD_ID     {10,'0','1','2','2','0','5','2','0','1','7'}
 #endif
 #ifndef ZCL_BASIC_SW_BUILD_ID //max 16 chars v1.3.02
-    #define ZCL_BASIC_SW_BUILD_ID       {7,'v',(APP_RELEASE>>4)+0x30,'.',(APP_RELEASE&0xf)+0x30,'.',(APP_BUILD>>4)+0x30,(APP_BUILD&0xf)+0x30}
+    #define ZCL_BASIC_SW_BUILD_ID       {7,'v',(APP_RELEASE>>4)+0x30,'.',(APP_RELEASE&0xf)+0x30,'.',(APP_BUILD/10)+0x30,(APP_BUILD%10)+0x30}
 #endif
 
 /*
