@@ -148,5 +148,10 @@ Thanks :))
 - 1.0.06
 	- Add `_TZE200_mja3fuja` sensor. It uses the same Zigbee model as r02, but has its own internal datapoint map.
 	- Fix formaldehyde divisor selection for model r02 sensors.
+- 1.0.25
+	- Fix `_TZE200_mja3fuja` startup on boards that use the alternate Tuya MCU UART path.
+	- Keep `_TZE200_mja3fuja` exposed as r02 for Zigbee2MQTT while selecting its own datapoint map internally.
+	- Fix float reporting divisor selection by checking the cluster as well as the attribute id.
+	- Initialize measurement attributes to zero until the Tuya MCU reports real values.
 
 [To the top](#Top)

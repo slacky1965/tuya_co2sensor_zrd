@@ -453,9 +453,12 @@ _CODE_ZCL_ void reportAttrs(void)
                     uint8_t *data, *prevData, *reportableChange;
                     float D, P, R, divisor;
                     /* all type float */
-                    if (pEntry->attrID == ZCL_CO2_MEASUREMENT_ATTRID_MEASUREDVALUE ||   // CO2
-                        pEntry->attrID == ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE ||      // VOC
-                        pEntry->attrID == ZCL_FHYD_MEASUREMENT_ATTRID_MEASUREDVALUE) {  // Formaldehyde
+                    if ((pEntry->clusterID == ZCL_CLUSTER_MS_CO2_MEASUREMENT &&
+                         pEntry->attrID == ZCL_CO2_MEASUREMENT_ATTRID_MEASUREDVALUE) ||
+                        (pEntry->clusterID == ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC &&
+                         pEntry->attrID == ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE) ||
+                        (pEntry->clusterID == ZCL_CLUSTER_MS_FHYD_MEASUREMENT &&
+                         pEntry->attrID == ZCL_FHYD_MEASUREMENT_ATTRID_MEASUREDVALUE)) {
                         data = (uint8_t*)&D;
                         data[0] = pAttrEntry->data[0];
                         data[1] = pAttrEntry->data[1];
@@ -474,13 +477,7 @@ _CODE_ZCL_ void reportAttrs(void)
                         reportableChange[2] = pEntry->reportableChange[2];
                         reportableChange[3] = pEntry->reportableChange[3];
 
-                        switch(pEntry->attrID) {
-                            case ZCL_FHYD_MEASUREMENT_ATTRID_MEASUREDVALUE:
-                                divisor = 100000000;
-                                break;
-                            default:
-                                divisor = 1000000;
-                        }
+                        divisor = (pEntry->clusterID == ZCL_CLUSTER_MS_FHYD_MEASUREMENT) ? 100000000 : 1000000;
                         D *= divisor;
                         P *= divisor;
                         R *= divisor;
