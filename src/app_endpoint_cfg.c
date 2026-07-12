@@ -195,7 +195,7 @@ const zclAttrInfo_t scene_attr1Tbl[] = {
 #ifdef ZCL_CO2_MEASUREMENT
 
 zcl_co2Attr_t g_zcl_co2Attrs = {
-        .value = 0.001014,
+        .value = 0,
 };
 
 
@@ -213,7 +213,7 @@ const zclAttrInfo_t co2_attrTbl[] = {
 
 #ifdef ZCL_TEMPERATURE_MEASUREMENT
 zcl_temperatureAttr_t g_zcl_temperatureAttrs = {
-        .value = 0x8000,    /* temperature unknown  */
+        .value = 0,
         .minValue = 0xF060, /* -40.00               */
         .maxValue = 0x2134, /* +85.00               */
 };
@@ -232,7 +232,7 @@ const zclAttrInfo_t temperature_attrTbl[] = {
 
 
 zcl_humidityAttr_t g_zcl_humidityAttrs = {
-        .value = 0xffff,    /* temperature unknown  */
+        .value = 0,
         .minValue = 0x0000,
         .maxValue = 0x2710, /* 100.00              */
 };
@@ -251,7 +251,7 @@ const zclAttrInfo_t humidity_attrTbl[] = {
 #ifdef ZCL_FHYD_MEASUREMENT
 
 zcl_fhydAttr_t g_zcl_fhydAttrs = {
-        .value = 0.001014,
+        .value = 0,
 };
 
 
