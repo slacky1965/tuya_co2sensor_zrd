@@ -15,8 +15,8 @@
 *    UART_RX_PC5 = GPIO_PC5,
 *    UART_RX_PD6 = GPIO_PD6,
 */
-#define GPIO_UART_TX            UART_TX_PB1
-#define GPIO_UART_RX            UART_RX_PB7
+#define GPIO_UART_TX            UART_TX_PC2
+#define GPIO_UART_RX            UART_RX_PC3
 
 /**************************** Configure UART ***************************************/
 #if UART_PRINTF_MODE
@@ -31,11 +31,13 @@
 #define PB4_FUNC                AS_GPIO
 #define PB4_OUTPUT_ENABLE       ON
 #define PB4_INPUT_ENABLE        OFF
+#define PB4_DATA_OUT            ON
 
 #define LED_POWER               GPIO_PA0
 #define PA0_FUNC                AS_GPIO
 #define PA0_OUTPUT_ENABLE       ON
 #define PA0_INPUT_ENABLE        OFF
+#define PA0_DATA_OUT            ON
 
 #define LED_PERMIT              LED_STATUS
 

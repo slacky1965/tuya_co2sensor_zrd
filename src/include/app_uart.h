@@ -31,10 +31,25 @@ typedef enum {
 } uartTx_err;
 
 extern uint8_t uart_msg_err;
+extern uint16_t uart_rx_callback_count;
+extern uint16_t uart_rx_byte_count;
+extern uint16_t uart_rx_last_len;
+extern uint8_t uart_rx_last_first_byte;
+extern uint16_t uart_rx_first_word;
+extern uint16_t uart_rx_first_55aa_offset;
+extern uint16_t uart_rx_sync_word;
 
 void app_uart_init();
+void set_uart_pins(uint32_t tx_pin, uint32_t rx_pin);
 uint32_t get_uart_baudrate();
 void set_uart_baudrate(uint32_t baudrate);
+uint16_t get_uart_rx_callback_count();
+uint16_t get_uart_rx_byte_count();
+uint16_t get_uart_rx_last_len();
+uint8_t get_uart_rx_last_first_byte();
+uint16_t get_uart_rx_first_word();
+uint16_t get_uart_rx_first_55aa_offset();
+uint16_t get_uart_rx_sync_word();
 
 uartTx_err app_uart_txMsg(uint8_t *data, uint8_t len);
 //uint8_t checksum(uint8_t *data, uint16_t length);

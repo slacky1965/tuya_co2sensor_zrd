@@ -126,7 +126,6 @@ void user_app_init(void)
     ota_init(OTA_TYPE_CLIENT, (af_simple_descriptor_t *)&app_ep1Desc, &app_otaInfo, &app_otaCb);
 #endif
 
-
     app_uart_init();
 
 }

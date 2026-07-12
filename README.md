@@ -146,7 +146,9 @@ Thanks :))
 	- Add `_TZE200_yvx5lh6k` sensor.
 	- Fix bugs in reporting. Fixed bugs with reporting. It didn't work correctly with the float type. With a maximum interval of 0, we got a "brick" (bug SDK).
 - 1.0.06
-	- Add `_TZE200_mja3fuja` sensor. It uses the same Zigbee model as r02, but has its own internal datapoint map.
 	- Fix formaldehyde divisor selection for model r02 sensors.
+	- Validated on `_TZE200_yvx5lh6k`.
+- 1.0.37
+	- Add validated secondary firmware for `_TZE200_mja3fuja`. It uses the same Zigbee model as r02, but has its own internal datapoint map.
 
 [To the top](#Top)

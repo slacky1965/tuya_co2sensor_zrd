@@ -19,6 +19,7 @@ typedef enum {
     COMMAND20   =   0x20,           /* Query module’s network status*/
     COMMAND24   =   0x24,           /* Sync time                    */
     COMMAND28   =   0x28,           /* Query DP data                */
+    COMMAND2C   =   0x2C,           /* Report DP data without linkage */
     COMMANDXX   =   0xFF,           /* For test                     */
 } command_t;
 
