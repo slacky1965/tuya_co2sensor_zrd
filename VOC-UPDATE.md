@@ -14,8 +14,7 @@ directories. Both retain Tuya_CO2Sensor_r02 for existing Z2M support;
 that shared identity is not sufficient to choose the hardware image.
 
 Already migrated devices use direct secondary OTA. Do not repeat the
-first-stage bootloader migration. Devices with higher historical custom
-file versions require the explicit OTA downgrade flow.
+first-stage bootloader migration.
 
 Zigbee2MQTT also needs three-decimal precision in both the R02 converter
 and final VOC post-processing. Until that correction is available,
