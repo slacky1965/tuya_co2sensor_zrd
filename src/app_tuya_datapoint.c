@@ -7,11 +7,8 @@ static const char8_t *tuya_manuf_name1[] = {
                                             NULL};
 
 static const char8_t *tuya_manuf_name2[] = {
-#if defined(SENSOR_YVX5LH6K)
                                            "yvx5lh6k",
-#else
                                            "mja3fuja",
-#endif
                                             NULL};
 
 const char8_t **tuya_manuf_names[] = {

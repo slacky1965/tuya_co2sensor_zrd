@@ -16,4 +16,5 @@ $(OUT_PATH)/platform/boot/8278/cstartup_8278.o
 # Each subdirectory must supply rules for building sources it contributes
 $(OUT_PATH)/platform/boot/%.o: $(SDK_PATH)/platform/boot/%.S
 	@echo 'Building file: $<'
-	@$(CC) $(BOOT_FLAG) $(MODEL_FLAGS) $(INCLUDE_PATHS) -c -o"$@" "$<"
+	@$(CC) $(BOOT_FLAG) $(INCLUDE_PATHS) -c -o"$@" "$<"
+

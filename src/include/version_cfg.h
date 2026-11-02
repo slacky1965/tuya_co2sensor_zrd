@@ -43,11 +43,7 @@
 
 #define APP_RELEASE                         0x10        //app release 1.0
 #ifndef VERSION_BUILD
-    #if defined(SENSOR_YVX5LH6K)
-        #define APP_BUILD                   0x07        //v1.0.07
-    #else
-        #define APP_BUILD                   0x26        //v1.0.38
-    #endif
+    #define APP_BUILD                       0x26        //app build 38, full version - v1.0.38
 #endif
 #define STACK_RELEASE						0x30        //stack release 3.0
 #define STACK_BUILD							0x01        //stack build 01

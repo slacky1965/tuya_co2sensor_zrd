@@ -1,25 +1,17 @@
 #include "app_main.h"
 
 /* data point for manufacturer id -
- * Build-selected YVX5LH6K or MJA3FUJA; their gas datapoints differ.
+ * "yvx5lh6k"
  *
  * id, type, len, divisor, remote_commands_functionCb, local_commands_functionCb
 */
 
 data_point_st_t data_point_model2[DP_IDX_MAXNUM] = {
-#if defined(SENSOR_YVX5LH6K)
-        {DP_TYPE2_ID_02, DP_VAL,  4,    1,  NULL, local_cmd_co2_2},
-#else
-        {DP_TYPE2_ID_16, DP_VAL,  4,    1,  NULL, local_cmd_co2_2},
-#endif
+        {DP_TYPE2_ID_16, DP_VAL,  4,    1,  NULL, local_cmd_co2_2},                                // co2
         {DP_TYPE2_ID_12, DP_VAL,  4,    10, NULL, local_cmd_temperature_2},                        // temperature
         {DP_TYPE2_ID_13, DP_VAL,  4,    10, NULL, local_cmd_humidity_2},                           // humidity
         {DP_TYPE2_ID_15, DP_VAL,  4,    1,  NULL, local_cmd_voc_2},                                // voc
-#if defined(SENSOR_YVX5LH6K)
-        {DP_TYPE2_ID_16, DP_VAL,  4,    1,  NULL, local_cmd_formaldehyde_2},
-#else
-        {DP_TYPE2_ID_02, DP_VAL,  4,    1,  NULL, local_cmd_formaldehyde_2},
-#endif
+        {DP_TYPE2_ID_02, DP_VAL,  4,    1,  NULL, local_cmd_formaldehyde_2},                        // formaldehyde
 };
 
 
@@ -79,7 +71,7 @@ void local_cmd_voc_2(void *args) {
 
     *voc *= divisor;
 
-    /* DP 0x15 is ppb; the R02 converter divides this attribute by 1e-6. */
+    /* Tuya DP 0x15 is ppb; the R02 converter exposes ppm with scale 1e-6. */
     float attrVoc = (float)*voc / 1000000000.0f;
 
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC, ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE, (uint8_t*)&attrVoc);
@@ -92,7 +84,7 @@ void local_cmd_voc_2(void *args) {
 //    printf("%02x\r\n", b[0]);
 
 #if UART_PRINTF_MODE && DEBUG_CMD
-            printf("VOC ppb: %d\r\n", *voc);
+            printf("VOC PPM: %d\r\n", *voc);
 #endif
 
 }
