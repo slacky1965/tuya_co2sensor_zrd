@@ -6,10 +6,10 @@ Zigbee2MQTT definition scales that to raw / 1000 ppm.
 
 | Original signature | Build command | Version | OTA header |
 | --- | --- | --- | --- |
-| _TZE200_yvx5lh6k | make SENSOR_MODEL=yvx5lh6k | 1.0.07 | 0x10073001 |
-| _TZE200_mja3fuja | make SENSOR_MODEL=mja3fuja | 1.0.38 | 0x10263001 |
+| _TZE200_yvx5lh6k | make -B SENSOR_MODEL=yvx5lh6k | 1.0.07 | 0x10073001 |
+| _TZE200_mja3fuja | make -B SENSOR_MODEL=mja3fuja | 1.0.38 | 0x10263001 |
 
-Run make clean before switching targets. Keep images in separate model
+Use -B to rebuild every object when switching targets. Keep images in separate model
 directories. Both retain Tuya_CO2Sensor_r02 for existing Z2M support;
 that shared identity is not sufficient to choose the hardware image.
 
