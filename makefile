@@ -4,7 +4,21 @@ PROJECT_NAME := tuya_co2sensor_zrd
 # Set the serial port number for downloading the firmware
 DOWNLOAD_PORT := COM3
 
-COMPILE_PREFIX = C:/TelinkSDK/opt/tc32/bin/tc32
+ifeq ($(OS),Windows_NT)
+TC32_PREFIX ?= C:/TelinkSDK/opt/tc32/bin/tc32
+else
+TC32_PREFIX ?= tc32
+endif
+COMPILE_PREFIX ?= $(TC32_PREFIX)
+
+SENSOR_MODEL ?= mja3fuja
+ifeq ($(SENSOR_MODEL),yvx5lh6k)
+MODEL_FLAGS = -DSENSOR_YVX5LH6K
+else ifeq ($(SENSOR_MODEL),mja3fuja)
+MODEL_FLAGS = -DSENSOR_MJA3FUJA
+else
+$(error SENSOR_MODEL must be yvx5lh6k or mja3fuja)
+endif
 
 AS      = $(COMPILE_PREFIX)-elf-as
 CC      = $(COMPILE_PREFIX)-elf-gcc
@@ -30,7 +44,7 @@ MAKE_INCLUDES := ./make
 TOOLS_PATH := ./tools
 BOOT_FILE := $(OUT_PATH)/bootloader.bin
 VERSION_RELEASE := V$(shell awk -F " " '/APP_RELEASE/ {gsub("0x",""); printf "%.1f", $$3/10.0; exit}' $(SRC_PATH)/include/version_cfg.h)
-VERSION_BUILD := $(shell awk -F " " '/APP_BUILD/ {gsub("0x",""); printf "%02d", $$3; exit}' ./src/include/version_cfg.h)
+VERSION_BUILD := $(if $(filter yvx5lh6k,$(SENSOR_MODEL)),07,38)
 ZCL_VERSION_FILE := $(shell python -c "import datetime; print(','.join(repr(c) for c in datetime.datetime.now().strftime('%Y%m%d')))")
 BOOT_SIZE := $(shell ls -l $(BIN_PATH)/bootloader.bin | awk '{print $$5}')
 
@@ -70,6 +84,8 @@ GCC_FLAGS := \
 -std=gnu99 \
 -fshort-wchar \
 -fms-extensions
+
+GCC_FLAGS += $(MODEL_FLAGS)
 
 ifeq ($(strip $(ZCL_VERSION_FILE)),)
 GCC_FLAGS += \
