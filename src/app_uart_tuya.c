@@ -813,7 +813,7 @@ static int32_t factory_resetCb(void *arg) {
 
     zb_resetDevice2FN();
 
-    printf("reset factory 2 from timer\r\n");
+//    printf("reset factory 2 from timer\r\n");
     factory_reset_status = 2;
 
     factory_resetTimerEvt = NULL;
@@ -822,7 +822,7 @@ static int32_t factory_resetCb(void *arg) {
 
 static int32_t factory_reset_statusCb(void *arg) {
 
-    printf("clear reset factory status from timer\r\n");
+//    printf("clear reset factory status from timer\r\n");
     factory_reset_status = 0;
 
     return -1;
@@ -1084,7 +1084,7 @@ void uart_cmd_handler() {
                     if (zb_getLocalShortAddr() >= 0xFFF8) {
                         if (!factory_reset_status) {
                             factory_reset_status = 2;
-                            printf("reset factory 2. zb_getLocalShortAddr(): 0x%x\r\n", zb_getLocalShortAddr());
+//                            printf("reset factory 2. zb_getLocalShortAddr(): 0x%x\r\n", zb_getLocalShortAddr());
                             zb_resetDevice2FN();
                             TL_ZB_TIMER_SCHEDULE(factory_reset_statusCb, NULL, TIMEOUT_15SEC);
                         }
@@ -1093,7 +1093,7 @@ void uart_cmd_handler() {
                         if (factory_resetTimerEvt) {
                             TL_ZB_TIMER_CANCEL(&factory_resetTimerEvt);
                         } else {
-                            printf("reset factory 1. zb_getLocalShortAddr(): 0x%x\r\n", zb_getLocalShortAddr());
+//                            printf("reset factory 1. zb_getLocalShortAddr(): 0x%x\r\n", zb_getLocalShortAddr());
                             zb_resetDevice2FN();
                         }
                         factory_resetTimerEvt = TL_ZB_TIMER_SCHEDULE(factory_resetCb, NULL, TIMEOUT_3SEC);
