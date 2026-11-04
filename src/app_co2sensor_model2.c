@@ -71,7 +71,8 @@ void local_cmd_voc_2(void *args) {
 
     *voc *= divisor;
 
-    float attrVoc = (float)*voc/1000000;
+    /* Tuya DP 0x15 is ppb; the R02 converter exposes ppm with scale 1e-6. */
+    float attrVoc = (float)*voc / 1000000000.0f;
 
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_GEN_ANALOG_INPUT_BASIC, ZCL_ANALOG_INPUT_ATTRID_PRESENT_VALUE, (uint8_t*)&attrVoc);
 
@@ -111,6 +112,5 @@ void local_cmd_formaldehyde_2(void *args) {
 #endif
 
 }
-
 
 
